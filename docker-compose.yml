@@ -1,0 +1,58 @@
+version: '3'
+
+services:
+  app:
+    container_name: docker-app
+    restart: always
+    build:
+      context: .
+      dockerfile: ./docker-conf/Dockerfile
+      args:
+        TIMEZONE: ${TIMEZONE}
+    environment:
+      DATABASE_URL: ls
+    volumes:
+      - type: bind
+        source: ./app/
+        target: /var/www/app/
+    networks:
+      - holanet
+    depends_on:
+      - database
+    ports:
+      - 8081:8080
+  database:
+    image: mysql:5.7
+    container_name: docker-db
+    command: ["--default-authentication-plugin=mysql_native_password"]
+    restart: always
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    ports:
+      - "9906:3306"
+    volumes:
+      - "database:/var/lib/mysql"
+    networks:
+      - holanet
+  phpmyadmin:
+    image: phpmyadmin
+    container_name: docker-db-admin
+    environment:
+      - PMA_ARBITRARY=1
+    restart: always
+    ports:
+      - 8085:80
+    depends_on:
+      - database
+    networks:
+      - holanet
+volumes:
+  database:
+    driver: local
+networks:
+  holanet:
+    driver: bridge
+

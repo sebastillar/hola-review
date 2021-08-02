@@ -1,0 +1,6 @@
+index:
+    path: /
+    controller: App\Controller\DefaultController::index
+get_by_username:
+    path: /users/{username}
+    controller: App\Controller\RestGetByUsernameController
