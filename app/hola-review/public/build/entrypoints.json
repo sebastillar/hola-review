@@ -1,0 +1,19 @@
+{
+  "entrypoints": {
+    "js/app": {
+      "js": [
+        "/public/build/runtime.js",
+        "/public/build/vendors-node_modules_bootstrap_dist_js_bootstrap_esm_js.js",
+        "/public/build/js/app.js"
+      ]
+    },
+    "css/app": {
+      "js": [
+        "/public/build/runtime.js"
+      ],
+      "css": [
+        "/public/build/css/app.css"
+      ]
+    }
+  }
+}
