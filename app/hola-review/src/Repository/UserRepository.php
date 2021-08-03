@@ -2,22 +2,25 @@
 
 namespace App\Repository;
 
-use App\Entity\User;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+use App\Entity\User as User;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
+
 
 /**
- * @method User|null find($id, $lockMode = null, $lockVersion = null)
- * @method User|null findOneBy(array $criteria, array $orderBy = null)
- * @method User[]    findAll()
- * @method User[]    findBy(array $criteria, array $orderBy = null, $limit = null, $offset = null)
+ * Class UserRepository
+ * @package App\Repository
  */
 class UserRepository extends ServiceEntityRepository
 {
+
+
+
     public function __construct(ManagerRegistry $registry)
     {
         parent::__construct($registry, User::class);
     }
+
 
     // /**
     //  * @return User[] Returns an array of User objects
@@ -47,4 +50,56 @@ class UserRepository extends ServiceEntityRepository
         ;
     }
     */
+
+    /**
+     * @param string $username
+     * @return User
+     */
+    public function findOneByUsername(string $username): ?User
+    {
+        $user = $this->createQueryBuilder('u')
+            ->where('u.username = :val')
+            ->setParameter('val', $username)
+            ->getQuery()
+            ->getOneOrNullResult();
+
+        return $user;
+    }
+
+    /**
+     * @return array
+     */
+    public function findAll(): array
+    {
+        $users = $this->createQueryBuilder('u')
+            ->select("u")
+            ->from("App:User", "usu")
+            ->orderBy("usu.name", "ASC")
+            ->getQuery()
+            ->getResult();
+        return $users;
+    }
+
+    /**
+     * @param User $user
+     */
+    public function save(User $user)
+    {
+        $this->getEntityManager()->persist($user);
+        $this->getEntityManager()->flush();
+    }
+
+    /**
+     * @param User $user
+     */
+    public function delete(User $user)
+    {
+        if (!$user) {
+            throw $this->createNotFoundException('No user found');
+        }
+        $this->getEntityManager()->remove($user);
+        $this->getEntityManager()->flush();
+    }
 }
+
+

@@ -74,11 +74,11 @@ class User implements UserInterface
     private $password;
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="json")
      * @Groups({"user:read", "user:write"})
      * @Assert\NotBlank()
      */
-    private $role;
+    private $roles = [];
 
     /**
      * User constructor.
@@ -87,12 +87,11 @@ class User implements UserInterface
      * @param $password
      * @param $role
      */
-    public function __construct($name, $username, $password, $role)
+    public function __construct($name, $username, $role)
     {
         $this->name = $name;
         $this->username = $username;
-        $this->password = $password;
-        $this->role = new Role($role);
+        array_push($this->roles, new Role($role));
     }
 
 
@@ -137,14 +136,9 @@ class User implements UserInterface
         return $this;
     }
 
-    public function getRole(): string
+    public function addRole(string $role): self
     {
-        return $this->role;
-    }
-
-    public function setRole(string $role): self
-    {
-        $this->role = $role;
+        array_push($this->roles, new Role($role));
 
         return $this;
     }
@@ -152,9 +146,13 @@ class User implements UserInterface
     /**
      * @inheritDoc
      */
-    public function getRoles()
+    public function getRoles(): array
     {
-        // TODO: Implement getRoles() method.
+        $roles = $this->roles;
+        // guarantee every user at least has ROLE_USER
+        $roles[] = new Role('ROLE_USER');
+
+        return array_unique($roles);
     }
 
     /**

@@ -10,7 +10,7 @@ if (in_array(PHP_SAPI, ['cli', 'phpdbg'], true)) {
 }
 
 require dirname(__DIR__, 3).'/vendor/autoload.php';
-require __DIR__.'/ContainerZ6NWKxx/srcApp_KernelDevDebugContainer.php';
+require __DIR__.'/ContainerLFWRIgD/srcApp_KernelDevDebugContainer.php';
 
 $classes = [];
 $classes[] = 'Symfony\Bundle\FrameworkBundle\FrameworkBundle';
@@ -475,6 +475,10 @@ $classes[] = 'Symfony\Bundle\SecurityBundle\Security\FirewallContext';
 $classes[] = 'Symfony\Component\Security\Http\Firewall\ExceptionListener';
 $classes[] = 'Symfony\Bundle\SecurityBundle\Security\FirewallConfig';
 $classes[] = 'Symfony\Bundle\SecurityBundle\Security\LazyFirewallContext';
+$classes[] = 'Symfony\Component\Security\Http\Firewall\LogoutListener';
+$classes[] = 'Symfony\Component\Security\Http\Logout\DefaultLogoutSuccessHandler';
+$classes[] = 'Symfony\Component\Security\Http\Logout\CsrfTokenClearingLogoutHandler';
+$classes[] = 'Symfony\Component\Security\Http\Logout\SessionLogoutHandler';
 $classes[] = 'Symfony\Component\Security\Http\HttpUtils';
 $classes[] = 'Symfony\Component\Security\Http\Logout\LogoutUrlGenerator';
 $classes[] = 'Symfony\Component\Security\Core\Encoder\UserPasswordEncoder';
@@ -482,6 +486,7 @@ $classes[] = 'Symfony\Component\Security\Http\RememberMe\ResponseListener';
 $classes[] = 'Symfony\Component\Security\Core\Role\RoleHierarchy';
 $classes[] = 'Symfony\Component\Security\Core\Authentication\Token\Storage\UsageTrackingTokenStorage';
 $classes[] = 'Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorage';
+$classes[] = 'Symfony\Bridge\Doctrine\Security\User\EntityUserProvider';
 $classes[] = 'Symfony\Component\Security\Core\User\InMemoryUserProvider';
 $classes[] = 'Symfony\Component\Security\Core\Validator\Constraints\UserPasswordValidator';
 $classes[] = 'Sensio\Bundle\FrameworkExtraBundle\EventListener\HttpCacheListener';
